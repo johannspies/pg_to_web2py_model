@@ -607,14 +607,14 @@ POSTGRESQL_NONRESERVED = set((
 ))
 
 
-def make_pool(dbname):
+def make_pool(dbname, port):
     """Create psycopg2  connection pool to database"""
     pool = pgpool.SimpleConnectionPool(1, 50,
                                        database=dbname,
                                        host='localhost',
                                        user='xxxx',
                                        password='xxxxx',
-                                       port=5432)
+                                       port=port)
                 
 
     return pool
@@ -832,7 +832,7 @@ def model(t, fld):
     return msb
 
 
-def main(dbname, schema='public', outputfile='/tmp/models_created.py'):
+def main():
     tfs = tablefields(schema)
     l = open(outputfile, "a")
     for i in tfs.keys():
@@ -848,36 +848,39 @@ if __name__ == '__main__':
     """ For testing purposes define the commandline parameters like this:
     dbname = 'wos'
     schema = 'wos_2017_2'
-    main(dbname, schema)
+    port = 63334
+    main()
     
     """
-    pool = make_pool()
-    # dbname = 'wos'
-    # schema = 'wos_2017_2'
-    # main(dbname, schema)
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dbname", required=True,
                         help="Database to connect to")
     parser.add_argument("-S", "--schema", required=False,
                         help="Schema to use. Default: 'public'")
+    parser.add_argument("-p", "--port", required=False,
+                        help="Schema to use. Default: 5432")
     parser.add_argument("-o", "--outputfile", required=False,
                         help="Outputfile -  default: '/tmp/models_created.py'")
     args = parser.parse_args()
     if args.schema:
         schema = args.schema
     else:
-        schema = None
+        schema = 'Public'
+    if args.port:
+        port = args.port
+    else:
+        port = 5432
+            
     dbname = args.dbname
+
     if args.outputfile:
         outputfile = args.outputfile
     else:
-        outputfile = None
-    pool = make_pool()
-    if schema and outputfile:
-        main(dbname, schema, outputfile)
-    elif schema and not outputfile:
-        main(dbname, schema=schema)
-    elif outputfile and not schema:
-        main(dbname, outputfile=outputfile)
-    else:
-        main(dbname)
+        outputfile = '/tmp/models_created.py'
+####for debugging ##############
+    # dbname = 'js'
+    # schema = 'wos_2017_2'
+    # port = 63334
+    # ###################################
+    pool = make_pool(dbname, port)
+    main()
