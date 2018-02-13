@@ -612,10 +612,10 @@ def make_pool(dbname, port):
     pool = pgpool.SimpleConnectionPool(1, 50,
                                        database=dbname,
                                        host='localhost',
-                                       user='xxxx',
-                                       password='xxxxx',
+                                       user='crest',
+                                       password='Za9ziiw6',
+                                       # port=5432)
                                        port=port)
-                
 
     return pool
 
@@ -832,7 +832,9 @@ def model(t, fld):
     return msb
 
 
-def main():
+def main(dbname,  port = 5432,
+         schema='public',
+         outputfile='/tmp/models_created.py'):
     tfs = tablefields(schema)
     l = open(outputfile, "a")
     for i in tfs.keys():
@@ -849,38 +851,47 @@ if __name__ == '__main__':
     dbname = 'wos'
     schema = 'wos_2017_2'
     port = 63334
-    main()
+    main(dbname, schema)
     
     """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--dbname", required=True,
-                        help="Database to connect to")
-    parser.add_argument("-S", "--schema", required=False,
-                        help="Schema to use. Default: 'public'")
-    parser.add_argument("-p", "--port", required=False,
-                        help="Schema to use. Default: 5432")
-    parser.add_argument("-o", "--outputfile", required=False,
-                        help="Outputfile -  default: '/tmp/models_created.py'")
-    args = parser.parse_args()
-    if args.schema:
-        schema = args.schema
-    else:
-        schema = 'Public'
-    if args.port:
-        port = args.port
-    else:
-        port = 5432
-            
-    dbname = args.dbname
-
-    if args.outputfile:
-        outputfile = args.outputfile
-    else:
-        outputfile = '/tmp/models_created.py'
 ####for debugging ##############
-    # dbname = 'js'
-    # schema = 'wos_2017_2'
-    # port = 63334
-    # ###################################
-    pool = make_pool(dbname, port)
-    main()
+    dbname = 'wos'
+    schema = 'wos_2017_2'
+    port = 63334
+    main(dbname, schema = schema, port = port)
+###################################
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("-d", "--dbname", required=True,
+    #                     help="Database to connect to")
+    # parser.add_argument("-S", "--schema", required=False,
+    #                     help="Schema to use. Default: 'public'")
+    # parser.add_argument("-p", "--port", required=False,
+    #                     help="Schema to use. Default: 5432")
+    # parser.add_argument("-o", "--outputfile", required=False,
+    #                     help="Outputfile -  default: '/tmp/models_created.py'")
+    # args = parser.parse_args()
+    # if args.schema:
+    #     schema = args.schema
+    # else:
+    #     schema = None
+    # if args.port:
+    #     port = args.port
+    # else:
+    #     port = 5432
+            
+    # dbname = args.dbname
+    
+    # if args.outputfile:
+    #     outputfile = args.outputfile
+    # else:
+    #     outputfile = None
+
+    # if schema and outputfile:
+    #     main(dbname, schema, outputfile)
+    # elif schema and not outputfile:
+    #     main(dbname, schema=schema)
+    # elif outputfile and not schema:
+    #     main(dbname, outputfile=outputfile)
+    # else:
+    #     main(dbname, port=port)
+pool = make_pool(dbname, port)
