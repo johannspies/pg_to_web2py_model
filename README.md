@@ -4,7 +4,7 @@ A script that queries a PostgreSQL database and creates a model file for existin
 Requires at least python3.6
 This script expect the following to be in a model where this output will be used:
 
-from gluon.dal import SQLCustomType
+```from gluon.dal import SQLCustomType
 tsv = SQLCustomType(
     type ='text',
     native='tsvector' )
@@ -19,7 +19,7 @@ boolean = SQLCustomType(
     type = 'boolean',
     native = 'boolean'
 )
-
+```
 It takes into account cases where table names and field names might be *reserved words*.  
 In such cases a "c_" will be added to the name and *rname*  will be used.
 
