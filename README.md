@@ -26,6 +26,12 @@ In such cases a "c_" will be added to the name and *rname*  will be used.
 Typical web2py-auth-related tables like auth_user, auth_group etc.  are ignored.
 And so all id-fields.
 
+This version of the script expect a config file with the name "~/.pg.ini"
+something like this:
 
-Username and password are not part of the commandline parameters.
-Please enter them in the function "def make_pool():" at about line 615.
+[DEFAULT]
+host = localhost
+user = thisuser
+password = thisuserpassword
+port = 5432
+
