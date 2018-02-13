@@ -606,16 +606,28 @@ POSTGRESQL_NONRESERVED = set((
     'ZONE',
 ))
 
-
+def read_ini():
+    """Read ~/pg.ini to get information to connect to PostgreSQL"""
+    import configparser
+    config = configparser.ConfigParser()
+    from pathlib import Path
+    home = str(Path.home())
+    config.read(f"{home}/pg.ini")
+    default = config['DEFAULT']
+    return dict(pw = default['password'],
+                host = default['host'],
+                user = default['user'],
+                port = default['port'])
+    
 def make_pool(dbname, port):
     """Create psycopg2  connection pool to database"""
+    d = read_ini()
     pool = pgpool.SimpleConnectionPool(1, 50,
                                        database=dbname,
-                                       host='localhost',
-                                       user='crest',
-                                       password='Za9ziiw6',
-                                       # port=5432)
-                                       port=port)
+                                       host=d['host']
+                                       user=d['user']
+                                       password=d['pw']
+                                       port=d['port'])
 
     return pool
 
