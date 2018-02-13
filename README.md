@@ -29,9 +29,10 @@ And so all id-fields.
 This version of the script expect a config file with the name "~/.pg.ini"
 something like this:
 
-[DEFAULT]
+```[DEFAULT]
 host = localhost
 user = thisuser
 password = thisuserpassword
 port = 5432
+```
 
