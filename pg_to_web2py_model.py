@@ -624,9 +624,9 @@ def make_pool(dbname, port):
     d = read_ini()
     pool = pgpool.SimpleConnectionPool(1, 50,
                                        database=dbname,
-                                       host=d['host']
-                                       user=d['user']
-                                       password=d['pw']
+                                       host=d['host'],
+                                       user=d['user'],
+                                       password=d['pw'],
                                        port=d['port'])
 
     return pool
